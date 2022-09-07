@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruoyi.system.mapper.BizPackageMapper">
+    
+    <resultMap type="BizPackage" id="BizPackageResult">
+        <result property="id"    column="id"    />
+        <result property="packageName"    column="package_name"    />
+        <result property="coverage"    column="coverage"    />
+        <result property="status"    column="status"    />
+        <result property="createTime"    column="create_time"    />
+        <result property="updateTime"    column="update_time"    />
+    </resultMap>
+
+    <sql id="selectBizPackageVo">
+        select id, package_name, coverage, status, create_time, update_time from biz_package
+    </sql>
+
+    <select id="selectBizPackageList" parameterType="BizPackage" resultMap="BizPackageResult">
+        <include refid="selectBizPackageVo"/>
+        <where>  
+            <if test="packageName != null  and packageName != ''"> and package_name like concat('%', #{packageName}, '%')</if>
+            <if test="coverage != null  and coverage != ''"> and coverage = #{coverage}</if>
+            <if test="status != null  and status != ''"> and status = #{status}</if>
+        </where>
+    </select>
+    
+    <select id="selectBizPackageById" parameterType="Long" resultMap="BizPackageResult">
+        <include refid="selectBizPackageVo"/>
+        where id = #{id}
+    </select>
+        
+    <insert id="insertBizPackage" parameterType="BizPackage" useGeneratedKeys="true" keyProperty="id">
+        insert into biz_package
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="packageName != null">package_name,</if>
+            <if test="coverage != null">coverage,</if>
+            <if test="status != null">status,</if>
+            <if test="createTime != null">create_time,</if>
+            <if test="updateTime != null">update_time,</if>
+         </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="packageName != null">#{packageName},</if>
+            <if test="coverage != null">#{coverage},</if>
+            <if test="status != null">#{status},</if>
+            <if test="createTime != null">#{createTime},</if>
+            <if test="updateTime != null">#{updateTime},</if>
+         </trim>
+    </insert>
+
+    <update id="updateBizPackage" parameterType="BizPackage">
+        update biz_package
+        <trim prefix="SET" suffixOverrides=",">
+            <if test="packageName != null">package_name = #{packageName},</if>
+            <if test="coverage != null">coverage = #{coverage},</if>
+            <if test="status != null">status = #{status},</if>
+            <if test="createTime != null">create_time = #{createTime},</if>
+            <if test="updateTime != null">update_time = #{updateTime},</if>
+        </trim>
+        where id = #{id}
+    </update>
+
+    <delete id="deleteBizPackageById" parameterType="Long">
+        delete from biz_package where id = #{id}
+    </delete>
+
+    <delete id="deleteBizPackageByIds" parameterType="String">
+        delete from biz_package where id in 
+        <foreach item="id" collection="array" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+</mapper>
