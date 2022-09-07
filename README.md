@@ -1,3 +1,11 @@
+```dockerfile
+docker run --name ruoyi-vue-mysql -d -p 3306:3306 -e MYSQL_ROOT_PASSWORD=root -e MYSQL_DATABASE=ry-vue mysql
+
+docker run --name ruoyi-vue-redis -p 6379:6379 -d redis
+
+```
+
+
 <p align="center">
 	<img alt="logo" src="https://oscimg.oschina.net/oscnet/up-d3d0a9303e11d522a06cd263f3079027715.png">
 </p>
